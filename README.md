@@ -1,7 +1,7 @@
 # Hydrus Slideshow
 Hydrus Slideshow is a simple Kodi-like slideshow app that can be used as screensaver.
 
-![Video](vid.mp4)
+![Video](vid.webm)
 
 # Configuration
 Use `/c` command line argument or `Alt + C` shortcut to open config window.
