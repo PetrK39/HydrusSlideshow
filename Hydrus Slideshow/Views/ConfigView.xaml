@@ -80,7 +80,8 @@
             </UniformGrid.Resources>
         </UniformGrid>
         <TabControl TabStripPlacement="Left"
-                    ItemsSource="{Binding Preferences}">
+                    ItemsSource="{Binding Preferences}"
+                    SelectedIndex="0">
             <TabControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type p:PreferenceCollection}">
                     <TextBlock Text="{Binding Name}" 
