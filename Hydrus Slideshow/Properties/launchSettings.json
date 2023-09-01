@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "Hydrus Slideshow": {
+      "commandName": "Project"
+    },
+    "/s": {
+      "commandName": "Project",
+      "commandLineArgs": "/s"
+    },
+    "/c": {
+      "commandName": "Project",
+      "commandLineArgs": "/c"
+    }
+  }
+}

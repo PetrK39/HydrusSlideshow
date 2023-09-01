@@ -1,0 +1,92 @@
+﻿<Window x:Class="Hydrus_Slideshow.Views.ConfigView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Hydrus_Slideshow.ViewModels"
+        xmlns:local="clr-namespace:Hydrus_Slideshow.Views"
+        xmlns:p="clr-namespace:PreferenceManagerLibrary.Preferences;assembly=PreferenceManagerLibrary"
+        d:DataContext="{d:DesignInstance Type=vm:ConfigViewModel, IsDesignTimeCreatable=True}"
+        mc:Ignorable="d"
+        Title="ConfigView" Height="450" Width="800">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type p:InputPreference}">
+            <Grid Margin="10,8,10,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition SharedSizeGroup="prefName"
+                                      MinWidth="170"
+                                      Width="1*" />
+                    <ColumnDefinition Width="1*"
+                                      MinWidth="170" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0"
+                           Margin="0,0,12,0"
+                           Text="{Binding Name}" 
+                           ToolTip="{Binding Description}"/>
+                <TextBox Grid.Column="1"
+                         Text="{Binding EditableValue, UpdateSourceTrigger=PropertyChanged}"
+                         IsEnabled="{Binding IsEnabled}"
+                         ToolTip="{Binding Description}">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsEditableValid}"
+                                             Value="False">
+                                    <Setter Property="BorderBrush"
+                                            Value="Red" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+                <TextBlock Grid.Row="1" 
+                           Grid.Column="1"
+                           Text="{Binding Error}" 
+                           Foreground="Red"
+                           HorizontalAlignment="Right"/>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type p:BoolPreference}">
+            <CheckBox Content="{Binding Name}"
+                      IsChecked="{Binding EditableValue}" 
+                      Margin="10,8,10,0"/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type p:PreferenceCollection}">
+            <ItemsControl ItemsSource="{Binding ChildrenPreferences}" />
+        </DataTemplate>
+    </Window.Resources>
+    <DockPanel>
+        <UniformGrid DockPanel.Dock="Bottom"
+                     HorizontalAlignment="Right"
+                     Columns="3">
+            <Button Command="{Binding DefaultsCommand}"
+                    Content="Defaults" />
+            <Button Command="{Binding CancelCommand}"
+                    Content="Close" />
+            <Button Command="{Binding SaveCommand}"
+                    Content="Save" />
+            <UniformGrid.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Padding"
+                            Value="8" />
+                    <Setter Property="Margin"
+                            Value="6" />
+                </Style>
+            </UniformGrid.Resources>
+        </UniformGrid>
+        <TabControl TabStripPlacement="Left"
+                    ItemsSource="{Binding Preferences}">
+            <TabControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type p:PreferenceCollection}">
+                    <TextBlock Text="{Binding Name}" 
+                               Padding="10"/>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+        </TabControl>
+    </DockPanel>
+</Window>
