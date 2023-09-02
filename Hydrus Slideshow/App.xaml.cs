@@ -1,15 +1,11 @@
-﻿using Hydrus_Slideshow.Services;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Windows;
+using Hydrus_Slideshow.Services;
 using Hydrus_Slideshow.ViewModels;
 using Hydrus_Slideshow.Views;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media;
 
 namespace Hydrus_Slideshow
 {
@@ -57,11 +53,6 @@ namespace Hydrus_Slideshow
         {
             var args = Environment.GetCommandLineArgs().Skip(1).Select(s => s.ToLower()).ToList();
 
-            if (args.Count > 2)
-            {
-                DisplayHelp(args);
-                nextState = States.Exit;
-            }
             else if (args.Count == 0 || args[0] == "/s")
             {
                 nextState = States.Slideshow;
