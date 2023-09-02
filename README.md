@@ -1,7 +1,7 @@
 # Hydrus Slideshow
 Hydrus Slideshow is a simple Kodi-like slideshow from your Hydrus instance that can be used as screensaver.
 
-[vid.webm](https://github.com/PetrK39/HydrusSlideshow/assets/60184450/ea8e589a-2b10-4f9a-9916-10c145df5f35)
+[vid.webm](https://github.com/PetrK39/HydrusSlideshow/assets/60184450/9b20b642-c3db-4e08-8ff1-9b49f06f00d3)
 
 
 # Configuration
