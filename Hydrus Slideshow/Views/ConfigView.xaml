@@ -84,8 +84,20 @@
                     SelectedIndex="0">
             <TabControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type p:PreferenceCollection}">
-                    <TextBlock Text="{Binding Name}" 
-                               Padding="10"/>
+                    <TextBlock Text="{Binding Name}"
+                               Padding="10">
+                        <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsEditableValid}"
+                                             Value="False">
+                                    <Setter Property="Foreground"
+                                            Value="Red" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                    </TextBlock>
                 </DataTemplate>
             </TabControl.ItemTemplate>
         </TabControl>
