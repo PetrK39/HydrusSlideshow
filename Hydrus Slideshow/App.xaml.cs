@@ -99,7 +99,7 @@ namespace Hydrus_Slideshow
             var cv = new ConfigView(cvm);
 
             cv.ShowDialog();
-            nextState = States.Slideshow;
+            nextState = States.Exit;
         }
         private static void DisplayHelp(IEnumerable<string> args)
         {
