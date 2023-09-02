@@ -1,9 +1,7 @@
-﻿using Hydrus_Slideshow.Services;
-using Hydrus_Slideshow.ViewModels;
-using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
+using Hydrus_Slideshow.Services;
+using Hydrus_Slideshow.ViewModels;
 
 namespace Hydrus_Slideshow.Views
 {
