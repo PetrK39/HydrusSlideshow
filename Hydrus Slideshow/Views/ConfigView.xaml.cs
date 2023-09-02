@@ -10,8 +10,8 @@ namespace Hydrus_Slideshow.Views
         {
             InitializeComponent();
             DataContext = viewModel;
-            Closing += (_, _) => isClosing = true;
-            viewModel.OnCloseRequest += (_, _) => { if (!isClosing) Close(); };
+            //Closing += (_, _) => isClosing = true;
+            viewModel.OnCloseRequest += (_, _) => Close();
         }
     }
 }

@@ -53,7 +53,7 @@ namespace Hydrus_Slideshow
         {
             var args = Environment.GetCommandLineArgs().Skip(1).Select(s => s.ToLower()).ToList();
 
-            else if (args.Count == 0 || args[0] == "/s")
+            if (args.Count == 0 || args[0] == "/s")
             {
                 nextState = States.Slideshow;
             }
