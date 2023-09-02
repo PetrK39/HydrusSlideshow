@@ -11,8 +11,6 @@ using CommunityToolkit.Mvvm.Input;
 using Hydrus_Slideshow.Models;
 using Hydrus_Slideshow.Services;
 using Hydrus_Slideshow.Utils;
-using PreferenceManagerLibrary.Manager;
-using PreferenceManagerLibrary.Preferences;
 using static Hydrus_Slideshow.Models.HydrusClient;
 using Timer = System.Timers.Timer;
 
@@ -27,8 +25,8 @@ namespace Hydrus_Slideshow.ViewModels
         private readonly INotificationService notificationService;
         private readonly Dispatcher dispatcher;
 
-        private HydrusClient hydrus;
-        private CircularEnumerator<SimpleHydrusFile>? enumerator;
+        private readonly HydrusClient hydrus;
+        private CircularEnumerator<SimpleHydrusFile> enumerator;
 
         private Timer timer;
         private Timer timeUpdateTimer;
@@ -65,10 +63,11 @@ namespace Hydrus_Slideshow.ViewModels
         }
         private async void Initialise()
         {
-            var r = new Random();
-            var tags = new[] { $"system:limit={1000}", "system:filetype=image" };
-            tags = tags.Concat(configService.HydrusQuerry.Split(new[] { ", " }, StringSplitOptions.None)).ToArray();
+            var tags = configService.HydrusQuerry.Split(new[] { ", " }, StringSplitOptions.None)
+                .Concat( new[] { $"system:limit={1000}", "system:filetype=image" })
+                .ToArray();
 
+            // fetch images
             List<SimpleHydrusFile> coll;
             try
             {
