@@ -98,8 +98,10 @@ namespace Hydrus_Slideshow
             var cvm = new ConfigViewModel(configService);
             var cv = new ConfigView(cvm);
 
-            cv.ShowDialog();
-            nextState = States.Exit;
+            if (cv.ShowDialog() is true)
+                nextState = States.Slideshow;
+            else
+                nextState = States.Exit;
         }
         private static void DisplayHelp(IEnumerable<string> args)
         {

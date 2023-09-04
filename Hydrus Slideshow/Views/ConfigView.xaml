@@ -63,13 +63,20 @@
     <DockPanel>
         <UniformGrid DockPanel.Dock="Bottom"
                      HorizontalAlignment="Right"
-                     Columns="3">
+                     Columns="4">
             <Button Command="{Binding DefaultsCommand}"
                     Content="Defaults" />
             <Button Command="{Binding CancelCommand}"
                     Content="Close" />
             <Button Command="{Binding SaveCommand}"
                     Content="Save" />
+            <CheckBox Content="and start slideshow"
+                      IsChecked="True"
+                      Padding="8"
+                      Margin="6"
+                      VerticalAlignment="Center"
+                      VerticalContentAlignment="Center"
+                      Name="startSlideshowCheckbox"/>
             <UniformGrid.Resources>
                 <Style TargetType="Button">
                     <Setter Property="Padding"

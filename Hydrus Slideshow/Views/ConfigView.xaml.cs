@@ -1,4 +1,5 @@
 ﻿using Hydrus_Slideshow.ViewModels;
+using System.ComponentModel;
 using System.Windows;
 
 namespace Hydrus_Slideshow.Views
@@ -10,6 +11,11 @@ namespace Hydrus_Slideshow.Views
             InitializeComponent();
             DataContext = viewModel;
             viewModel.OnCloseRequest += (_, _) => Close();
+        }
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            DialogResult = startSlideshowCheckbox.IsChecked;
+            base.OnClosing(e);
         }
     }
 }
