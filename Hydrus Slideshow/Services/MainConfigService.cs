@@ -37,7 +37,12 @@ namespace Hydrus_Slideshow.Services
 
             var tabHydrus = new PreferenceCollection("hydrus", "Hydrus");
 
-            var hyUrl = new InputPreference("hydrus.url", "Hydrus address", defaultValue: "http://localhost:45869/");
+            var uriValidator = new StringValidator().AddCustom(s =>
+            {
+                if (Uri.TryCreate(s, new UriCreationOptions(), out _)) return string.Empty;
+                else return $"Failed to parse URL";
+            });
+            var hyUrl = new InputPreference("hydrus.url", "Hydrus address", defaultValue: "http://localhost:45869/", valueValidator: uriValidator );
             var tokenValidator = new StringValidator().AddEqualsTo("Not valid token length", 64);
             var hyToken = new InputPreference("hydrus.token", "Hydrus token", valueValidator: tokenValidator);
             var hyQuerry = new InputPreference("hydrus.querry", "Hydrus querry", defaultValue: "system:archive");
