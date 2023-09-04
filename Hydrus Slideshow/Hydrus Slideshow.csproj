@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\PreferenceManager\PreferenceManagerLibrary\PreferenceManagerLibrary.csproj" />
+    <ProjectReference Include="..\PreferenceManager\PreferenceManagerLibrary\PreferenceManagerLibrary.csproj" />
   </ItemGroup>
 
 </Project>

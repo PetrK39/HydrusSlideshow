@@ -1,0 +1,3 @@
+[submodule "PreferenceManager"]
+	path = PreferenceManager
+	url = https://github.com/PetrK39/PreferenceManager.git
