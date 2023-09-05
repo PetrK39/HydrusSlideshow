@@ -23,13 +23,13 @@ namespace Hydrus_Slideshow.ViewModels
         private readonly IErrorDialogService errorDialogService;
         private readonly IClipboardService clipboardService;
         private readonly INotificationService notificationService;
+        private readonly IRealTimeProviderService realTimeProviderService;
         private readonly Dispatcher dispatcher;
 
         private readonly HydrusClient hydrus;
         private CircularEnumerator<SimpleHydrusFile> enumerator;
 
         private Timer timer;
-        private Timer timeUpdateTimer;
 
         [ObservableProperty]
         private bool isPlaying = true;
@@ -43,17 +43,20 @@ namespace Hydrus_Slideshow.ViewModels
 
         [ObservableProperty]
         private bool isFullscreen;
-        public static string TimeString => DateTime.Now.ToShortTimeString();
+        public string TimeString => realTimeProviderService.TimeString;
 
         public event EventHandler<bool>? OnExitRequired;
 
-        public SlideshowViewModel(IConfigService configService, IErrorDialogService errorDialogService, IClipboardService clipboardService, INotificationService notificationService)
+        public SlideshowViewModel(IConfigService configService, IErrorDialogService errorDialogService, IClipboardService clipboardService, INotificationService notificationService, IRealTimeProviderService realTimeProviderService)
         {
             this.configService = configService;
             this.errorDialogService = errorDialogService;
             this.clipboardService = clipboardService;
             this.notificationService = notificationService;
+            this.realTimeProviderService = realTimeProviderService;
             this.dispatcher = Dispatcher.CurrentDispatcher;
+
+            this.realTimeProviderService.PropertyChanged += (_, e) => dispatcher.Invoke(() => PropertyChanged?.Invoke(this, e));
 
             hydrus = new HydrusClient(new Uri(this.configService.HydrusUrl), this.configService.HydrusToken);
 
@@ -64,7 +67,7 @@ namespace Hydrus_Slideshow.ViewModels
         private async void Initialise()
         {
             var tags = configService.HydrusQuerry.Split(new[] { ", " }, StringSplitOptions.None)
-                .Concat( new[] { $"system:limit={1000}", "system:filetype=image" })
+                .Concat(new[] { $"system:limit={1000}", "system:filetype=image" })
                 .ToArray();
 
             // fetch images
@@ -95,20 +98,6 @@ namespace Hydrus_Slideshow.ViewModels
             };
             timer.Elapsed += (_, _) => NextImage();
             timer.Start();
-
-            // realtime update
-            timeUpdateTimer = new Timer
-            {
-                AutoReset = true,
-                Interval = 60 * 1000
-            };
-            timeUpdateTimer.Elapsed += (_, _) => dispatcher.Invoke(() => OnPropertyChanged(nameof(TimeString)));
-            await Task.Run(async () =>
-            {
-                await Task.Delay((60 - DateTime.Now.Second) * 1000);
-                dispatcher.Invoke(() => OnPropertyChanged(nameof(TimeString)));
-                timeUpdateTimer.Start();
-            });
         }
 
         [RelayCommand]
