@@ -26,6 +26,7 @@ Setup slideshow preferences in 'Slideshow' tab
 |Copy Image hash to clipboard|`Ctrl + C`|
 |Open Config|`Alt + C`|
 |Toggle Fullscreen|`Alt + Enter`|
+|Exit|Escape|
 |Toggle Help|`F1`|
 
 # Using app as a screensaver
