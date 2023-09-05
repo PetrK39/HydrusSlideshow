@@ -74,27 +74,11 @@ namespace Hydrus_Slideshow
         }
         private void ShowSlideshow()
         {
-            MainStoryboardProviderService? msps = null;
-            MainErrorDialogService? meds = null;
-            MainClipboardService? mcbs = null;
-            MainNotificationService? mns = null;
-            MainRealTimeProviderService? mrtps = null;
-
-            SlideshowViewModel? svm = null;
-            SlideshowView? sv = null;
-
-            Dispatcher.Invoke(() =>
-            {
-                msps = new MainStoryboardProviderService(configService);
-                meds = new MainErrorDialogService();
-                mcbs = new MainClipboardService();
-                mns = new MainNotificationService();
-                mrtps = new MainRealTimeProviderService();
-
-
-                svm = new SlideshowViewModel(configService, meds, mcbs, mns, mrtps);
-                sv = new SlideshowView(svm, msps);
-            });
+            var msps = new MainStoryboardProviderService(configService);
+            var meds = new MainErrorDialogService();
+            var mcbs = new MainClipboardService();
+            var mns = new MainNotificationService();
+            var mrtps = new MainRealTimeProviderService();
 
             if (string.IsNullOrWhiteSpace(configService.HydrusToken))
             {
@@ -102,6 +86,8 @@ namespace Hydrus_Slideshow
                 nextState = States.Config;
                 return;
             }
+            var svm = new SlideshowViewModel(configService, meds, mcbs, mns, mrtps);
+            var sv = new SlideshowView(svm, msps);
 
             if (sv.ShowDialog() is true)
                 nextState = States.Config;
@@ -110,14 +96,8 @@ namespace Hydrus_Slideshow
         }
         private void ShowConfig()
         {
-            ConfigViewModel? cvm = null;
-            ConfigView? cv = null;
-
-            Dispatcher.Invoke(() =>
-            {
-                cvm = new ConfigViewModel(configService);
-                cv = new ConfigView(cvm);
-            });
+            var cvm = new ConfigViewModel(configService);
+            var cv = new ConfigView(cvm);
 
             if (cv.ShowDialog() is true)
                 nextState = States.Slideshow;
