@@ -6,6 +6,8 @@ using System.Windows;
 using Hydrus_Slideshow.Services;
 using Hydrus_Slideshow.ViewModels;
 using Hydrus_Slideshow.Views;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Hydrus_Slideshow
 {
@@ -24,10 +26,26 @@ namespace Hydrus_Slideshow
         private States currentState = States.Startup;
         private States nextState = States.Exit;
 
-        private readonly IConfigService configService;
+        private readonly IHost host;
         public App()
         {
-            configService = new MainConfigService();
+            host = Host.CreateDefaultBuilder()
+           .ConfigureServices((services) =>
+           {
+               services.AddTransient<IClipboardService, MainClipboardService>();
+               services.AddSingleton<IConfigService, MainConfigService>();
+               services.AddTransient<IErrorDialogService, MainErrorDialogService>();
+               services.AddTransient<INotificationService, MainNotificationService>();
+               services.AddSingleton<IRealTimeProviderService, MainRealTimeProviderService>();
+               services.AddTransient<IStoryboardProviderService, MainStoryboardProviderService>();
+
+               services.AddSingleton<SlideshowViewModel>();
+               services.AddSingleton<ConfigViewModel>();
+
+               services.AddSingleton<SlideshowView>();
+               services.AddSingleton<ConfigView>();
+           })
+           .Build();
         }
         private void Application_Startup(object sender, StartupEventArgs e)
         {
@@ -74,20 +92,17 @@ namespace Hydrus_Slideshow
         }
         private void ShowSlideshow()
         {
-            var msps = new MainStoryboardProviderService(configService);
-            var meds = new MainErrorDialogService();
-            var mcbs = new MainClipboardService();
-            var mns = new MainNotificationService();
-            var mrtps = new MainRealTimeProviderService();
+            var configService = host.Services.GetRequiredService<IConfigService>();
+            var dialogService = host.Services.GetRequiredService<IErrorDialogService>();
 
             if (string.IsNullOrWhiteSpace(configService.HydrusToken))
             {
-                meds.ShowExceptionDialog(new ArgumentNullException(nameof(configService.HydrusToken)));
+                dialogService.ShowExceptionDialog(new ArgumentNullException(nameof(configService.HydrusToken)));
                 nextState = States.Config;
                 return;
             }
-            var svm = new SlideshowViewModel(configService, meds, mcbs, mns, mrtps);
-            var sv = new SlideshowView(svm, msps);
+
+            var sv = host.Services.GetRequiredService<SlideshowView>();
 
             if (sv.ShowDialog() is true)
                 nextState = States.Config;
@@ -96,8 +111,7 @@ namespace Hydrus_Slideshow
         }
         private void ShowConfig()
         {
-            var cvm = new ConfigViewModel(configService);
-            var cv = new ConfigView(cvm);
+            var cv = host.Services.GetRequiredService<ConfigView>();
 
             if (cv.ShowDialog() is true)
                 nextState = States.Slideshow;
